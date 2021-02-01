@@ -1,0 +1,5 @@
+Use this command to set up the REPL 
+
+racket -i -p neil/sicp -l xrepl
+
+It is C-d to exit the REPL
