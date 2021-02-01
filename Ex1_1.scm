@@ -31,4 +31,9 @@
          (else  -1))
     (+ a 1))
 
+(define (abs x)
+  (cond ((< x 0) (- x)) 
+        (else x)))
+
+(abs -3)
 
