@@ -1,8 +1,7 @@
 (define (sqrt-iter guess x)
   (if (good-enough? guess x)
-  guess
- (and (writeln (abs (- (square guess) x))) (writeln (improve guess x))  
-      (sqrt-iter (improve guess x) x))))
+      guess
+      (sqrt-iter (improve guess x) x)))
 
 (define (improve guess x)
   (average guess (/ x guess)))
@@ -26,7 +25,6 @@
 
 (define (print x)
         x)
-
 
 (sqrt 9)
 
