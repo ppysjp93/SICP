@@ -28,3 +28,15 @@
 ; model for calculations then it can't evaluate (p) where p is a primitive of
 ; some sort
 
+; Let's now take this opportunity to perform some lexical scoping on our 
+; iterative factorial procedure
+
+(define (factorial n) 
+  (define (fact-iter product counter) 
+    (if (< n counter)
+      product
+      (fact-iter (* product counter) 
+                 (+ counter 1))))
+  (fact-iter 1 1))
+
+(factorial 3)
