@@ -25,3 +25,6 @@
     (if (= count 0)
     b
     (fib-iter (+ a b) a (- count 1))))
+
+
+(fib 100)

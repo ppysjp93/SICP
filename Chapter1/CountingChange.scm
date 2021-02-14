@@ -17,7 +17,7 @@
         ((= kinds-of-coins 4) 25)
         ((= kinds-of-coins 5) 50)))
 
-(count-change 100)
+(count-change 9)
 
 ; Well the program gives the same result as what is in the book so that is a good
 ; thing I suppose. 
@@ -33,4 +33,4 @@
         ((= kinds-of-coins 3) 5)
         ((= kinds-of-coins 4) 10)))
 
-(count-change 12)
+(count-change 11)
