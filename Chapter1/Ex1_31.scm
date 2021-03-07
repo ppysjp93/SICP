@@ -57,7 +57,7 @@
 ; Obviously we could go further here and define pi-approx so that it takes no
 ; formal arguments but I like that we can vary the accuracy of the approximation
 
-; iterative for, of product. Let's see if it works
+; iterative form of product. Let's see if it works
 
 (define (product term a next b) 
   (define (iter a result) 
@@ -99,7 +99,5 @@
 (pi-approx 10.0)
 
 (pi-approx 1000.0)
-
-
 
 
