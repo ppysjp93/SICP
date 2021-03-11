@@ -1,7 +1,7 @@
 ; Since I spent so much time making my iterative form of cont-frac I'm going
 ; to use it
 
-(define (cont-frac-iter n d next combine i k) 
+(define (cont-frac-iter n d next combine k) 
   (define (iter i result) 
     (if (= i 1) 
         result 
@@ -10,11 +10,10 @@
 
 (define (cont-frac n d k) 
   (cont-frac-iter n 
-                 d 
-                 (lambda (i) (- i 1))  
-                 (lambda (n d f) (/ n (+ d f))) 
-                 1 
-                 k))
+                  d 
+                  (lambda (i) (- i 1))  
+                  (lambda (n d f) (/ n (+ d f))) 
+                  k))
 
 ; We are told that we have a sequence for (d i) that does the following
 ; 1 2 1 1 4 1 1 6 1 1 8 ....
@@ -35,7 +34,7 @@
                 (if (= (/ (+ i 1) 3) n) 
                     (* 2 n) 
                     1))) 
-           10)
+           1000)
 
 (require racket/trace)
 (trace cont-frac-iter)
