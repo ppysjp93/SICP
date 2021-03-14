@@ -29,11 +29,10 @@
 ; We our now in a position to define our procedural arguments
 ; Because these are relatively simple operations I've replaced
 ; them with lambdas in the main function definition.
-
 (define (next k) (+ k 1))
 (define (term k) (* (y k) (T k)))
 
-; We now put everything we know together to make our simpson integral function
+; xWe now put everything we know together to make our simpson integral function
 
 (define (simpson f a b n) 
   (let ((h (/ (- b a) n))) 
