@@ -18,4 +18,28 @@
 ; then returns the number of times that integer is divisible by then this is 
 ; a good step to solving the problem.
 
+(define (number-of-divisions x d) 
+  (define (iter x result) 
+    (if (not (= (remainder x d) 0))
+        result
+        (iter (/ x d) (+ result 1))))
+  (if (= d 1) 
+      (error 
+        "An integer divided by 1 is itself and thus causes an infinite loop." ) 
+      (iter x 0)))
+
+
+(define (car x) 
+ (number-of-divisions x 2))
+
+(define (cdr x) 
+ (number-of-divisions x 3))
+
+(cons 2 3)
+(car (cons 2 3))
+(cdr (cons 2 3))
+
+; Thus we have an arithmetic representation for a pair as it meets the conditions
+; that the constructor and the selectors must have with each other. 
+
 

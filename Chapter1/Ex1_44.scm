@@ -25,3 +25,7 @@
 
 ; Be careful about smoothing too much! 
 
+(define (square x) (* x x))
+
+
+
