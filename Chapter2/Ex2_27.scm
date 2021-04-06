@@ -54,11 +54,13 @@ x
 ; the basic problem is that I can't reverse a nil and I can't reverse a single
 ; value so I'm trying to premptively strike.
 
-(trace-define (deep-reverse x) 
+(define (deep-reverse x) 
   (define notlist? 
     (lambda (x) (not (list? x))))
   (cond ((null? (cdr x)) x) 
-        ((or (notlist? (car x)) (notlist? (car (cdr x)))) (reverse x)) 
+        ((or (notlist? (car x)) 
+             (notlist? (car (cdr x)))) 
+         (reverse x)) 
         (else (list (deep-reverse (car (reverse x))) 
                     (deep-reverse (car (cdr (reverse x))))))))
 
@@ -95,6 +97,11 @@ x
 (define y (list 1 (list 2 3)))
 y
 (deep-reverse y)
+
+; In this case (car y) is not a list. Currently the or statement stops any 
+; kind of recursion happening, for this case (deep-reverse y) is just 
+; (reverse y). So there is a problem with the or statement. 
+; Similar reasing follows for z as well.
 
 (define z (list (list 2 3) 1))
 z
