@@ -4,4 +4,5 @@
       (newline)  
       (foreach proc (cdr items))))
 
-(foreach (lambda (x) (newline) (display x)) (list 57 321 88))
+(foreach (lambda (x) (newline) (display x)) 
+         (list 57 321 88))

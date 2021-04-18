@@ -26,3 +26,6 @@
 
 (>= -4 -5)
 
+(cons (list 1 2) (list 3 4))
+
+(cdr (cons (list 1 2) (list 3 4)))

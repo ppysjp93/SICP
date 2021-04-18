@@ -4,11 +4,13 @@
 
 (length (list x x))
 
-(define (count-leaves x) 
+(trace-define (count-leaves x) 
   (cond ((null? x) 0) 
         ((not (pair? x)) 1) 
         (else (+ (count-leaves (car x)) 
                  (count-leaves (cdr x))))))
+
+(require racket/trace)
 
 (count-leaves x)
 

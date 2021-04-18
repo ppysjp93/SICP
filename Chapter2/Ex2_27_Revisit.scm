@@ -1,4 +1,6 @@
-(define (deep-reverse x) 
+(require racket/trace)
+
+(trace-define (deep-reverse x) 
   (let ((leftbranch (car x)) 
          (rightbranch (car (cdr x)))) 
     (define endoflist? 
@@ -22,14 +24,18 @@
                       (deep-reverse leftbranch))))))
 
 (define x (list (list 1 2) (list 3 4)))
-(fringe x)
+(deep-reverse x)
 
 (define y (list 1 (list 2 3)))
-(fringe y)
+(deep-reverse y)
 
 (define z (list (list 2 3) 1))
-(fringe z)
+(deep-reverse z)
 
-; Now there must be a higher order abstraction to be found here. 
 
+; The following case doesn't work and this is because we have considered 
+; The problem using only two branches I think. 
+
+(define a (list (list 1 2) 3 4))
+(deep-reverse a)
 

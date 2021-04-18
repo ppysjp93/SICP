@@ -11,8 +11,8 @@
         (else (+ (cc amount 
                      (cdr values-of-coins)) 
                  (cc (- amount 
-                        (car values-of-coins)) v
-                     alues-of-coins)))))
+                        (car values-of-coins)) 
+                     values-of-coins)))))
 
 (count-change 100)
 
