@@ -23,9 +23,12 @@
 
 (deep-reverse x)
 
-(deep-reverse (cons (list 1 2) (list 3 4)))
+(deep-reverse (list (list 1 2) (list 3 4)))
 
 ; I think I will get better at this with experience. 
 
-
+; The solution follows the basic idea of reverse. We're still appending the 
+; car of the list to the reverse of its cdr, but now we check to see if 
+; the car is a pair. If the car is a pair it needs reversing gain so needs
+; passing through deep reverse. If not we only need to deep reverse the cdr. 
 
