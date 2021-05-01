@@ -1,9 +1,3 @@
-(define (accumulate op initial sequence) 
-  (if (null? sequence) 
-      initial
-      (op (car sequence) 
-          (accumulate op initial (cdr sequence)))))
-
 (define (dot-product v w) 
   (accumulate + 0 (map * v w)))
 
@@ -37,3 +31,8 @@
 (define m (* x x))
 
 (matrix-*-matrix m n)
+
+
+(cadr (list 1 2))
+
+

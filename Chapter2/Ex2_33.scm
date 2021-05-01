@@ -19,3 +19,15 @@
               (map (lambda (x) 1) sequence)))
 
 (length (list 1 2 3))
+
+(define (length sequence) 
+  (accumulate (lambda (x y) (+ 1 y)) 
+              0 
+              sequence))
+
+
+(length (list 1 2 3))
+
+
+
+

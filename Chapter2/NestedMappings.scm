@@ -24,7 +24,11 @@
                        (enumerate-interval 1 (- i 1)))) 
                 (enumerate-interval 1 n)))))
 
+; make sure you use the filter defined in the book not the in-built filter
+
 (prime-sum-pairs 6)
+
+(require racket/trace)
 
 (define (permutations s) 
   (if (null? s) 
@@ -38,5 +42,10 @@
  (filter (lambda (x) (not (= x item))) 
          sequence) )
 
-(permutations (list 1 2 3))
+
+
+
+
+
+
 
