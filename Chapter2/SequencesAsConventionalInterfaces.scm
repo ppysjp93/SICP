@@ -36,7 +36,7 @@
   (cond ((null? sequence) nil) 
         ((predicate (car sequence)) 
          (cons (car sequence) 
-               (filter predicate (cdr sequence)))) 
+              (filter predicate (cdr sequence)))) 
         (else (filter predicate (cdr sequence)))))
 
 (define x (list 1 2 3 4 5 6 7 8 9 10))

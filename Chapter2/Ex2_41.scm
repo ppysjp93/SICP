@@ -29,10 +29,10 @@
 (unique-triples 5)
 
 (define (equalTripleSum-s? s) 
-  (lambda (x) (= (accumulate + 
+  (lambda (triple) (= (accumulate + 
                              0 
-                             x) 
-                 s)))
+                             triple) 
+                      s)))
 
 (filter (equalTripleSum-s? 10) (unique-triples 5))
 
