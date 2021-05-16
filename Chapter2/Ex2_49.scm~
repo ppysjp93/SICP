@@ -1,0 +1,112 @@
+(define (frame-coord-map frame) 
+  (lambda (v) 
+    (add-vect 
+      (origin-frame frame) 
+      (add-vect (scale-vect (xcor-vect v) 
+                            (edge1-frame frame))
+                (scale-vect (ycor-vect v) 
+                            (edge2-frame frame))))))
+
+(define (segments->painter segment-list) 
+  (lambda (frame) 
+    (for-each 
+      (lambda (segment) 
+        (draw-line 
+          ((frame-coord-map frame) (start-segment segment)) 
+          ((frame-coord-map frame) (end-segment segment))))
+      segment-list)))
+
+; Vector Constructor and Selectors
+
+(define (make-vect xcor ycor) 
+  (cons xcor ycor))
+
+(define (xcor-vect v) 
+  (car v))
+
+(define (ycor-vect v) 
+  (cdr v))
+
+; Frame Constructor and Selectors
+
+(define (make-frame origin edge1 edge2) 
+  (list origin edge1 edge2))
+
+(define (origin-frame frame) 
+  (car frame))
+
+(define (edge1-frame frame) 
+  (car (cdr frame)))
+
+(define (edge2-frame frame) 
+  (car (cdr (cdr frame))))
+
+; Segment Constructor and Selectors
+
+(define (make-segment a b) 
+  (cons a b))
+
+(define (start-segment segment) 
+  (car segment))
+
+(define (end-segment segment) 
+  (cdr segment))
+
+; Solution 1 
+
+(define v1 (make-vect 0 0))
+(define v2 (make-vect 1 0))
+(define v3 (make-vect 1 1))
+(define v4 (make-vect 0 1))
+
+(define bottom-segment (make-segment v1 v2))
+(define right-segment (make-segment v2 v3))
+(define top-segment (make-segment v3 v4))
+(define left-segment (make-segment v4 v1))
+
+(define out-line (list bottom-segment right-segment top-segment left-segment))
+
+; Solution 2 
+
+(define forward-slash 
+  (make-segment v1 v3))
+
+(define back-slash 
+  (make-segment v2 v4))
+
+(define X (list forward-slash back-slash))
+
+; Solution 3 
+
+(define (average-vec a b) 
+ (define average-coor 
+   (lambda (x y) (/ (+ x y) 2))) 
+  (make-vect (average-coor (xcor-vect a) 
+                           (xcor-vect b)) 
+             (average-coor (ycor-vect a) 
+                           (ycor-vect b))))
+
+
+(define mid-bottom (average-vec v1 v2))
+(define mid-right (average-vec v2 v3))
+(define mid-top (average-vec v3 v4))
+(define mid-left (average-vec v4 v1))
+
+(define bottom-right-seg 
+  (make-segment mid-bottom mid-right))
+
+(define top-right-seg 
+  (make-segment mid-right mid-top))
+
+(define top-left-seg 
+  (make-segment mid-top mid-left))
+
+(define bottom-left-seg 
+  (make-segment mid-left mid-bottom))
+
+(define diamond (list bottom-right-seg top-right-seg 
+                      top-left-seg bottom-left-seg))
+
+(define frame1 (make-frame v1 v2 v4))
+
+;(paint ((segments->painter diamond) frame1))

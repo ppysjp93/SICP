@@ -48,6 +48,8 @@
 (define (row position) 
   (cadr position))
 
+
+
 ; Solution for adjoin-position
 
 (define (adjoin-position new-row k rest-of-queens) 
@@ -65,15 +67,17 @@
             (queen-cols (- k 1))))) 
   (queen-cols board-size))
 
-(define k 3)
+(define k 8)
 (define set-of-positions (queens k))  
 (define positions (car set-of-positions))
 (define kth-queen (list-ref positions (- k 1)))
+
 (define other-queens (remove kth-queen positions))
 
 (display-set set-of-positions)
 (display positions)
-(display (remove kth-queen positions)) 
+(display other-queens)
+
 
 
 ; Soluton for safe?
@@ -113,13 +117,13 @@
             (queen-cols (- k 1)))))) 
   (queen-cols board-size))
 
-(display-set (queens 4))
-
+(display-set (queens 8))
 
 ; Helper Functions for safe-coordinate-pair?
 
 (define (same-col? p1 p2) 
   (= (col p1) (col p2)))
+
 
 (define (same-row? p1 p2) 
   (= (row p1) (row p2)))
