@@ -1,6 +1,6 @@
 (require racket/trace)
 
-(trace-define (deriv exp var) 
+(define (deriv exp var) 
   (cond ((number? exp) 0) 
         ((variable? exp) 
          (if (same-variable? exp var) 1 0)) 
@@ -52,7 +52,7 @@
 
 ; Small upgrade
 
-(define (-=number? exp num) 
+(define (=number? exp num) 
   (and (number? exp) (= exp num)))
 
 (define (make-sum a1 a2) 

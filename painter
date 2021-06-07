@@ -1,1 +1,0 @@
-Chapter2/Painter.scm:10:10:(define (segments->painter segment-list) 
