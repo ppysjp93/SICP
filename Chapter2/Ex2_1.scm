@@ -20,7 +20,10 @@
 (define -one-third2 (make-rat 1 -3))
 (define one-third2 (make-rat 1 3))
 
+one-third
+
 (print-rat one-third)
+
 (print-rat -one-third)
 (print-rat -one-third2)
 (print-rat one-third2)

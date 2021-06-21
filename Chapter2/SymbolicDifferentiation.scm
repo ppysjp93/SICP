@@ -73,3 +73,4 @@
 (display (deriv '(* x y) 'x)) 
 
 (display (deriv '(* (* x y) (+ x 3)) 'x)) 
+
