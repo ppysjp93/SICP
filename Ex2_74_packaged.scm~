@@ -1,0 +1,66 @@
+(#%require (only racket/base error))
+(#%require (only racket/base make-hash))
+(#%require (only racket/base hash-set!))
+(#%require (only racket/base hash-ref))
+
+; table set up
+
+(define *op-table* (make-hash))
+
+(define (put op type proc)
+  (hash-set! *op-table* (list op type) proc))
+
+(define (get op type)
+  (hash-ref *op-table* (list op type) '()))
+
+; data tagging set up
+
+(define (attach-tag type-tag contents) 
+  (cons type-tag contents))
+
+(define (type-tag datum) 
+  (if (pair? datum) 
+      (car datum) 
+      (error "Bad tagged datum -- TYPE-TAG" datum)))
+
+(define (content datum) 
+  (if (pair? datum) 
+    (cdr datum) 
+    (error "Bad tagged datum -- CONTENTS" datum)))
+
+(define (install-Div1-Package) 
+  (define (get-name record) 
+  (car record))
+  (define (get-address record) 
+    (cadr record))
+  (define (get-salary record) 
+    (caddr record))
+  (define (make-record name address salary) 
+    (list name address salary))
+  ;interface to the rest of the system
+ (define (tag x) (attach-tag 'Div1 x)) 
+ (put 'get-name '(Div1) get-name)
+ (put 'get-address '(Div1) get-address)
+ (put 'get-salary '(Div1) get-salary)
+ (put 'make-record 'Div1 
+      (lambda (name salary address) 
+        (make-record name address salary))))
+
+
+(define record1 (make-record 'Sam 'Parnell 100))
+(define record2 (make-record 'Tom 'Edward 1000))
+(define record3 (make-record 'Rob 'Hanbury 500))
+(define record4 (make-record 'Andy 'Springwood 500))
+
+
+
+
+
+
+
+
+
+
+
+
+ 
