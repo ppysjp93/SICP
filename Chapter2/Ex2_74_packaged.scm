@@ -142,20 +142,3 @@ file1
 ; At some point try implementing a different design for the data coming 
 ; in from a different division.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

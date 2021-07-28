@@ -24,7 +24,7 @@
 
 ;; interface to the rest of the system
 
-(define (install-rectangular-package) 
+(define (install-polar-package) 
   ;; internal procedures
   (define (magnitude z) (car z)) 
   (define (angle z) (cdr z)) 
@@ -45,7 +45,6 @@
   (put 'make-from-mag-ang 'polar 
        (lambda (r a) (tag (make-from-mag-ang r a))))
   'done)
-
 
 (define (apply-generic op . args) 
   (let ((type-tags (map type-tag args))) 
