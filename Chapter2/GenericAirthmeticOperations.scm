@@ -295,3 +295,12 @@ z2
 (display "Ex2_77.scm")
 (newline)
 (magnitude z1)
+
+
+(display "Trace")
+
+(trace add)
+
+
+(add z2 z2)
+
