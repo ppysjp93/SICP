@@ -318,6 +318,8 @@
 
 (install-coercion-package)
 
+(trace apply-generic)
+
 (add two z1)
 
 ; Ex2_81.scm

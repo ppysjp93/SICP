@@ -5,6 +5,18 @@
 (#%require (only racket/base hash-ref))
 (#%require racket/trace)
 
+; Coercion Table
+
+(define *coercion-table* (make-hash))
+
+(define (put-coercion type1 type2 proc)
+  (hash-set! *coercion-table* (list type1 type2) proc))
+
+(define (get-coercion type1 type2)
+  (hash-ref *coercion-table* (list type1 type2) '()))
+
+; Procedure Table
+
 (define *proc-table* (make-hash))
 
 (define (put op type proc)
@@ -13,20 +25,61 @@
 (define (get op type)
   (hash-ref *proc-table* (list op type) '()))
 
+; Modified apply-generic procedure to allow for coercion
+
 (define (apply-generic op . args) 
   (let ((type-tags (map type-tag args))) 
     (let ((proc (get op type-tags))) 
-      (if proc 
-          (apply proc (map contents args)) 
-          (error 
-            "No method for these types -- APPLY-GENERERIC" 
-            (list op type-tags))))))
+      (if (not (equal? proc '())) 
+          (apply proc (map contents args))
+          (if (= (length args) 2) 
+              (let ((type1 (car type-tags)) 
+                (type2 (cadr type-tags)) 
+                (a1 (car args)) 
+                (a2 (cadr args))) 
+            (if (equal? type1 type2)
+                (error 
+                  "Cannot coerce arguments of the same type.")
+                (let ((t1->t2 (get-coercion type1 type2)) 
+                    (t2->t1 (get-coercion type2 type1))) 
+                  (cond (t1->t2 
+                          (apply-generic op (t1->t2 a1) a2)) 
+                        (t2->t1 
+                          (apply-generic op a1 (t2->t1 a2))) 
+                        (else 
+                          (error "No method for these types" 
+                                 (list op type-tags))))))) 
+           (error "No method for these types" 
+              (list op type-tags)))))))
 
+
+; Stuff for debugging 
+
+;(and (display "Operations: ") (display op))
+;(newline)
+;(and (display "Arguments: " )(display args))
+;(newline) 
+;(and (display "Type-Tags:  " )(display type-tags))
+;(newline) 
+;(and (display "Procedure:  " )(display proc))
+;    (newline)
+;    (newline)            
+
+
+
+
+
+            
+
+
+
+;(define (attach-tag type-tag contents) 
+; (if (number? contents) 
+;     contents 
+;     (cons type-tag contents)))
 
 (define (attach-tag type-tag contents) 
- (if (number? contents) 
-     contents 
-     (cons type-tag contents)))
+ (cons type-tag contents))
 
 
 (define (type-tag datum) 
@@ -46,6 +99,7 @@
 (define (sub x y) (apply-generic 'sub x y))
 (define (mul x y) (apply-generic 'mul x y))
 (define (div x y) (apply-generic 'div x y))
+(define (exp x y) (apply-generic 'exp x y))
 
 ; General Procedures for Complex Numbers
 
@@ -67,6 +121,8 @@
        (lambda (x y) (* x y))) 
   (put 'div '(scheme-number scheme-number) 
        (lambda (x y) (/ x y)))
+  (put 'exp '(scheme-number scheme-number) 
+       (lambda (x y) (expt x y)))
   (put 'make 'scheme-number 
        (lambda (x) (tag x))))
 
@@ -233,74 +289,61 @@
 
 (define two (make-scheme-number 2))
 
-two
-(add two two)
-(sub two two)
-(mul two two)
-(div two two)
-(newline)
- 
-; Rational Number Arithmetic
-
-(define (make-rat n d) 
-  ((get 'make 'rational) n d))
-
-(define (display-rat x) 
-  ((get 'print 'rational) x))
-
-(define two-thirds (make-rat 2 3))
-
-two-thirds
-(display-rat (add two-thirds two-thirds))
-(display-rat (sub two-thirds two-thirds))
-(display-rat (mul two-thirds two-thirds))
-(display-rat (div two-thirds two-thirds))
-(newline)
+;(add two two)
  
 ; Complex-Number Arithmetic
 
-(define (make-rectangular x y) 
+(define (make-complex-from-real-imag x y) 
   ((get 'make-from-real-imag 'complex) x y))
 
+(define (scheme-number->complex n) 
+  (make-complex-from-real-imag (contents n) 0))
 
-(define z1 (make-rectangular 3 4))
-
-z1
-(add z1 z1)
-(sub z1 z1)
-(mul z1 z1)
-(div z1 z1)
-(newline)
-
-(define (make-polar x y) 
-  ((get 'make-from-mag-ang 'complex) x y))
-
-(define z2 (make-polar 3 4))
-
-z2
-(add z2 z2)
-(sub z2 z2)
-(mul z2 z2)
-(div z2 z2)
-(newline)
-
-; Make Rectangular or Polar needs to be adapted further to take into account
-; the additon of a complex number that is rectangular in form and one that is 
-; in polar form. This can be done by adapting the make-rectangular-or-polar 
-; procedure.
-
-; Ex2_77.scm
-
-(newline)
-(display "Ex2_77.scm")
-(newline)
-(magnitude z1)
+(define z1 (make-complex-from-real-imag 3 4))
+(define z2 (make-complex-from-real-imag 4 5))
 
 
-(display "Trace")
+;(put-coercion 'scheme-number 'complex scheme-number->complex)
+ 
+(define (install-coercion-package) 
+  (define (scheme-number->scheme-number n) n)
+  (define (complex->complex z) z)
+  (define (scheme-number->complex n) 
+   (make-complex-from-real-imag (contents n) 0)) 
+  (put-coercion 'scheme-number 'scheme-number 
+                scheme-number->scheme-number)
+  (put-coercion 'complex 'complex 
+                  complex->complex)
+  (put-coercion 'scheme-number 'complex scheme-number->complex))
 
-(trace add)
-(trace apply-generic)
+(install-coercion-package)
 
-(add z2 z2)
+(add two z1)
+
+; Ex2_81.scm
+
+; Part A
+
+; When two exponentials types evaluated by the exponential procedure then 
+; the apply procedure enters into an infinite loop.
+; This is because it constantly tries to convert the first argument into 
+; to itself.
+
+;(exp z1 z2)
+
+; Part B
+
+; Louis Reasoner was correct. apply-generic does need fix apply-generic 
+; so that it doesn't attempt to do coercion if the two arguments have the same
+; type. 
+
+; Part C
+
+; I think to take into account arguments of the same time, the central
+; if statement which checks to see if there is a procedure in the 
+; procedure table should be converted to a condition with three predicates
+; 1) For the given types if there is a procedure in the procedure table apply
+; 2) If there isn't a procedure in the procedure table but the arguments are of 
+;       the same time don't attempt coercion (i.e. error)
+; 3) Attempt coercion for the different types. 
 

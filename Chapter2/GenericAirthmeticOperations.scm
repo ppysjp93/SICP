@@ -299,8 +299,13 @@ z2
 
 (display "Trace")
 
-(trace add)
+(trace apply-generic)
+(trace magnitude)
+
+(magnitude z1)
+
+(mul z1 z1)
 
 
-(add z2 z2)
+
 
